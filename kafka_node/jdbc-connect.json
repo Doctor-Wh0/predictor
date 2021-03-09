@@ -1,0 +1,28 @@
+bootstrap.servers=localhost:9092
+
+key.converter=org.apache.kafka.connect.json.JsonConverter
+value.converter=org.apache.kafka.connect.json.JsonConverter
+
+log4j.rootLogger=DEBUG, stdout
+
+name=griddb-sink
+connector.class=io.confluent.connect.jdbc.JdbcSinkConnector
+tasks.max=1
+key.converter.schemas.enable=true
+value.converter.schemas.enable=true
+batch.size=1
+
+topics.regex=INTRADAY_(.*)
+
+connection.url=jdbc:gs://239.0.0.1:41999/defaultCluster/public
+connection.user=admin
+connection.password=admin
+auto.create=true
+
+transforms=TimestampConverter
+transforms.TimestampConverter.type=org.apache.kafka.connect.transforms.TimestampConverter$Value
+transforms.TimestampConverter.format=yyyy-MM-dd hh:mm:ss
+transforms.TimestampConverter.field=time
+transforms.TimestampConverter.target.type=Timestamp
+pk.mode=record_value
+pk.fields=time
